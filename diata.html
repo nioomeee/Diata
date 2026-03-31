@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diaita - Archival MVP</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body { background-color: #F8F6F2; color: #2D372B; font-family: 'Inter', sans-serif; overflow-x: hidden; }
+        .serif { font-family: 'Playfair Display', serif; }
+        .text-rust { color: #C66C41; }
+        .bg-rust { background-color: #C66C41; }
+        .bg-pine { background-color: #4B5542; }
+        .text-pine { color: #4B5542; }
+        
+        /* Smooth View Transitions */
+        .view-section { display: none; animation: fadeIn 0.4s ease-in-out; }
+        .view-section.active { display: flex; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Custom Scrollbar for aesthetic */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 10px; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center selection:bg-rust selection:text-white">
+
+    <nav class="w-full max-w-7xl flex justify-between items-center p-6 border-b border-gray-200/50 z-50">
+        <div class="serif text-3xl font-semibold italic cursor-pointer" onclick="navigate('landing')">Diaita</div>
+        <div class="hidden md:flex space-x-8 text-sm font-medium text-gray-400">
+            <button onclick="navigate('landing')" class="nav-link hover:text-black transition" data-target="landing">Home</button>
+            <button onclick="navigate('quiz')" class="nav-link hover:text-black transition" data-target="quiz">Advisor</button>
+            <button onclick="navigate('log')" class="nav-link hover:text-black transition" data-target="log">Log</button>
+            <button onclick="navigate('insights')" class="nav-link hover:text-black transition" data-target="insights">Insights</button>
+        </div>
+        <div class="w-10 h-10 rounded-full bg-pine text-white flex items-center justify-center font-serif italic cursor-pointer shadow-sm">N</div>
+    </nav>
+
+    <main id="landing" class="view-section active w-full flex-1 flex-col items-center justify-center text-center px-4 mt-20">
+        <p class="text-xs tracking-[0.25em] text-rust font-semibold mb-6 uppercase">Ancient Wisdom • Modern Science</p>
+        <h1 class="serif text-5xl md:text-7xl mb-2 text-[#2D372B]">Your body.</h1>
+        <h1 class="serif text-5xl md:text-7xl mb-2 text-[#2D372B]">Your regimen.</h1>
+        <h1 class="serif text-5xl md:text-7xl mb-8 text-rust italic">Your Diaita.</h1>
+        
+        <p class="max-w-xl text-gray-600 text-lg mb-12 leading-relaxed font-light">
+            Personalized nutrition that remembers who you are. A digital oracle for the modern vitality seeker, curated with botanical precision.
+        </p>
+
+        <button onclick="navigate('quiz')" class="bg-rust text-white px-10 py-4 rounded-sm hover:opacity-90 transition shadow-lg tracking-widest text-sm uppercase">
+            Begin your regimen &rarr;
+        </button>
+    </main>
+
+    <main id="quiz" class="view-section w-full max-w-2xl flex-col items-center text-center px-4 mt-12 pb-20">
+        <p class="text-xs tracking-[0.2em] text-rust font-semibold mb-4 uppercase">The Philosophy</p>
+        <h2 class="serif text-4xl italic mb-10">How do you nourish?</h2>
+        
+        <div class="grid grid-cols-2 gap-4 w-full mb-16">
+            <button onclick="toggleSelect(this, 'diet')" class="diet-btn border border-rust bg-rust/10 p-6 rounded-sm transition flex flex-col items-center justify-center shadow-sm">
+                <span class="text-3xl mb-3">🌿</span>
+                <span class="font-medium text-rust">Vegetarian</span>
+            </button>
+            <button onclick="toggleSelect(this, 'diet')" class="diet-btn border border-gray-200 bg-white p-6 rounded-sm transition flex flex-col items-center justify-center hover:border-gray-400">
+                <span class="text-3xl mb-3">🌱</span>
+                <span class="font-medium text-gray-600">Vegan</span>
+            </button>
+        </div>
+
+        <p class="text-xs tracking-[0.2em] text-rust font-semibold mb-4 uppercase">The Vigilance</p>
+        <h2 class="serif text-4xl italic mb-10">What must we exclude?</h2>
+        
+        <div class="flex flex-wrap justify-center gap-3 mb-16">
+            <button onclick="togglePill(this)" class="px-6 py-2 border border-gray-300 rounded-full text-sm text-gray-600 hover:border-gray-500 transition">Gluten</button>
+            <button onclick="togglePill(this)" class="px-6 py-2 border border-rust bg-rust text-white rounded-full text-sm shadow-md transition">Peanuts</button>
+            <button onclick="togglePill(this)" class="px-6 py-2 border border-rust bg-rust text-white rounded-full text-sm shadow-md transition">Dry Fruits</button>
+            <button onclick="togglePill(this)" class="px-6 py-2 border border-gray-300 rounded-full text-sm text-gray-600 hover:border-gray-500 transition">Soy</button>
+        </div>
+
+        <button onclick="navigate('log')" class="w-full bg-pine text-white py-4 rounded-sm tracking-widest text-sm hover:opacity-90 transition shadow-lg mt-4 uppercase">
+            Complete My Regimen &rarr;
+        </button>
+    </main>
+
+    <main id="log" class="view-section w-full max-w-6xl flex-col px-6 mt-12 pb-20">
+        <p class="text-xs tracking-[0.2em] text-rust font-semibold mb-2 uppercase">The Daily Inscription</p>
+        <h2 class="serif text-5xl italic mb-12 border-l-2 border-rust pl-4">Journal of Inscription</h2>
+
+        <div class="flex flex-col lg:flex-row gap-12">
+            <div class="flex-1">
+                <div class="flex space-x-8 border-b border-gray-200 mb-8 text-sm font-semibold tracking-widest uppercase pb-2">
+                    <span class="text-rust border-b-2 border-rust pb-2">Breakfast</span>
+                    <span class="text-gray-400">Lunch</span>
+                    <span class="text-gray-400">Dinner</span>
+                </div>
+                
+                <input type="text" placeholder="Search for a food..." class="w-full p-4 bg-transparent border-b border-gray-300 text-xl serif italic mb-8 focus:outline-none focus:border-rust text-gray-600">
+
+                <div class="space-y-4">
+                    <div class="flex justify-between items-center p-4 bg-white shadow-sm border border-gray-100 cursor-pointer hover:border-rust transition">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 bg-gray-200 rounded-sm flex items-center justify-center text-xl">🥣</div>
+                            <div>
+                                <h3 class="serif text-xl">Greek Yogurt, Plain</h3>
+                                <p class="text-xs text-gray-400 tracking-widest mt-1 uppercase">Fage • 59 kcal per 100g</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-xs text-gray-400 tracking-widest mb-1">P / C / F</p>
+                            <p class="text-sm font-medium">10g / 3g / 0g</p>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-between items-center p-4 bg-white shadow-sm border border-gray-100 cursor-pointer hover:border-rust transition">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 bg-gray-200 rounded-sm flex items-center justify-center text-xl">🍓</div>
+                            <div>
+                                <h3 class="serif text-xl">Pomegranate Seeds</h3>
+                                <p class="text-xs text-gray-400 tracking-widest mt-1 uppercase">Whole Fruit • 83 kcal per 100g</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-xs text-gray-400 tracking-widest mb-1">P / C / F</p>
+                            <p class="text-sm font-medium">1.7g / 19g / 1.2g</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="w-full lg:w-96 bg-white p-8 border border-gray-200 shadow-sm relative">
+                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-gray-200 to-transparent"></div>
+                <h3 class="serif text-3xl italic mb-2">Determine Portion</h3>
+                <p class="text-sm text-gray-500 mb-8 font-light">Fine-tune the weight of your curated offering.</p>
+                
+                <div class="flex justify-between items-end border-b border-gray-200 pb-6 mb-8">
+                    <div>
+                        <span class="text-6xl font-light">150</span><span class="text-xl text-gray-400 italic">g</span>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-xs text-rust tracking-widest font-semibold uppercase mb-1">Yields</p>
+                        <span class="text-3xl font-light">124</span><span class="text-lg text-gray-400 italic"> kcal</span>
+                    </div>
+                </div>
+
+                <div class="flex justify-between text-center mb-10">
+                    <div>
+                        <p class="text-xs text-gray-400 tracking-widest uppercase mb-2">Protein</p>
+                        <p class="serif text-xl italic">15.0g</p>
+                    </div>
+                    <div class="border-l border-gray-200 px-6">
+                        <p class="text-xs text-gray-400 tracking-widest uppercase mb-2">Carbs</p>
+                        <p class="serif text-xl italic">4.5g</p>
+                    </div>
+                    <div class="border-l border-gray-200 pl-6">
+                        <p class="text-xs text-gray-400 tracking-widest uppercase mb-2">Fats</p>
+                        <p class="serif text-xl italic">0.0g</p>
+                    </div>
+                </div>
+
+                <button class="w-full bg-pine text-white py-4 rounded-sm tracking-widest text-sm hover:opacity-90 transition shadow-md uppercase">
+                    Inscribe this meal
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <main id="insights" class="view-section w-full max-w-6xl flex-col px-6 mt-12 pb-20 relative">
+        <div class="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-[#e2e8db] to-[#F8F6F2] -z-10 opacity-50"></div>
+        
+        <p class="text-xs tracking-[0.2em] text-pine font-semibold mb-2 uppercase">Archive Vol. IV — Insights</p>
+        <h2 class="serif text-5xl md:text-6xl italic mb-4 text-pine">Your Ancient</h2>
+        <h2 class="serif text-5xl md:text-6xl italic mb-10 text-pine">Wisdom Revealed</h2>
+        
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div class="lg:col-span-2 bg-white p-8 border border-gray-200 shadow-sm relative">
+                <h3 class="serif text-2xl italic mb-6">Weekly Caloric Rhythm</h3>
+                <div class="w-full h-64">
+                    <canvas id="caloricChart"></canvas>
+                </div>
+            </div>
+
+            <div class="space-y-8">
+                <div class="bg-pine text-white p-8 shadow-sm">
+                    <p class="text-xs tracking-widest text-gray-300 uppercase mb-2">Status</p>
+                    <h3 class="serif text-3xl italic mb-4">Harmonious</h3>
+                    <p class="text-sm font-light text-gray-200 leading-relaxed">Your macro distribution aligns with the 'Golden Ratio' for metabolic efficiency.</p>
+                </div>
+
+                <div class="bg-[#f3dfd5] p-8 shadow-sm">
+                    <p class="text-xs tracking-widest text-rust uppercase mb-2">Peak Energy</p>
+                    <h3 class="serif text-3xl italic text-rust mb-4">14:00 PM</h3>
+                    <p class="text-sm font-light text-rust leading-relaxed">Highest metabolic efficiency observed during the mid-day sun.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // --- 1. ROUTING LOGIC ---
+        function navigate(viewId) {
+            // Hide all views
+            document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+            // Show target view
+            document.getElementById(viewId).classList.add('active');
+            
+            // Update Nav styling
+            document.querySelectorAll('.nav-link').forEach(el => {
+                if(el.dataset.target === viewId) {
+                    el.classList.add('text-black', 'border-b-2', 'border-rust', 'pb-1');
+                    el.classList.remove('text-gray-400');
+                } else {
+                    el.classList.remove('text-black', 'border-b-2', 'border-rust', 'pb-1');
+                    el.classList.add('text-gray-400');
+                }
+            });
+
+            // If entering insights, initialize/animate the chart
+            if(viewId === 'insights' && !window.chartInitialized) {
+                initChart();
+                window.chartInitialized = true;
+            }
+            window.scrollTo(0, 0);
+        }
+
+        // --- 2. QUIZ INTERACTION LOGIC ---
+        function toggleSelect(element, group) {
+            const buttons = document.querySelectorAll(`.${group}-btn`);
+            buttons.forEach(btn => {
+                btn.className = `${group}-btn border border-gray-200 bg-white p-6 rounded-sm transition flex flex-col items-center justify-center hover:border-gray-400`;
+                btn.querySelector('span:last-child').classList.remove('text-rust');
+                btn.querySelector('span:last-child').classList.add('text-gray-600');
+            });
+            element.className = `${group}-btn border border-rust bg-rust/10 p-6 rounded-sm transition flex flex-col items-center justify-center shadow-sm`;
+            element.querySelector('span:last-child').classList.add('text-rust');
+            element.querySelector('span:last-child').classList.remove('text-gray-600');
+        }
+
+        function togglePill(element) {
+            if(element.classList.contains('bg-rust')) {
+                element.className = "px-6 py-2 border border-gray-300 rounded-full text-sm text-gray-600 hover:border-gray-500 transition";
+            } else {
+                element.className = "px-6 py-2 border border-rust bg-rust text-white rounded-full text-sm shadow-md transition";
+            }
+        }
+
+        // --- 3. CHART.JS LOGIC FOR INSIGHTS ---
+        function initChart() {
+            const ctx = document.getElementById('caloricChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                    datasets: [{
+                        label: 'Caloric Intake',
+                        data: [1800, 2100, 1950, 2300, 1850, 2400, 2000],
+                        borderColor: '#4B5542', // Pine color
+                        backgroundColor: 'rgba(75, 85, 66, 0.1)',
+                        borderWidth: 3,
+                        pointBackgroundColor: '#C66C41', // Rust color
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 2,
+                        pointRadius: 6,
+                        pointHoverRadius: 8,
+                        tension: 0.4, // Curvy line
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: { display: false, min: 1500, max: 2600 },
+                        x: { 
+                            grid: { display: false, drawBorder: false },
+                            ticks: { color: '#9ca3af', font: { family: 'Inter', size: 10 } }
+                        }
+                    },
+                    animation: { duration: 1500, easing: 'easeOutQuart' }
+                }
+            });
+        }
+    </script>
+</body>
+</html>
